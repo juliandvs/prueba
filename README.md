@@ -28,4 +28,8 @@ Para fastAPI:
 Para n8n:
 
 1. se descarga el Agente - Verticcal.json
-2. se configuran los http requests tool con la url de ngrok y la ruta para cada tool Crear Usuario = /crm/contact​, Dejar Nota = /crm/contact/note​ Y Actualizar contacto = /crm/contact/update
+2. exportar el .json a n8n en la web
+3. se configuran los http requests tool con la url de ngrok y la ruta para cada tool Crear Usuario = /crm/contact​, Dejar Nota = /crm/contact/note​ Y Actualizar contacto = /crm/contact/update
+
+
+Por ultimo se hacen las pruebas.
