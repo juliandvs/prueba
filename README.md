@@ -27,7 +27,7 @@ Para fastAPI:
 
 Para n8n:
 
-1. se descarga el Agente - Verticcal.json
+1. se descarga el "Agente - Verticcal.json"
 2. importar el .json a n8n en la web
 3. Ir al "Google Gemini Chat Model" y poner la {API KEY} de gemini 
 4. (TENER CUIDADO) revisar si la url que esta ya establecida en los http tools es la misma que arroja ngrok y verificar si tienen el endpoint correspondiente, de lo contrario, se configuran los http requests tool con la url de ngrok y la ruta para cada tool Crear Usuario = /crm/contact​, Dejar Nota = /crm/contact/note​ Y Actualizar contacto = /crm/contact/update
