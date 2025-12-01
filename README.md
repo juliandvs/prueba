@@ -3,7 +3,7 @@ Para el CRM
 
 
 1. Iniciar hubspot con el siguiente correo pivote :
-    correo : julianspam0714@gmail.com
+    correo : julianspam01407@gmail.com
     contra : juliandaviD14*_
 
 
