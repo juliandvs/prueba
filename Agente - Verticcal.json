@@ -1,0 +1,204 @@
+{
+  "name": "Agente - Verticcal",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b9d464a1-7ff6-46de-b5ed-7388b43c9ca4",
+      "name": "When chat message received",
+      "webhookId": "9bce73e4-9461-4658-8086-286e0e8f8734"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Eres un asistente virtual que ayuda a hacer cruds a los usuarios, se lo mas amable posible."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d6dcd73d-6f7d-4410-b4f9-25ecf4543112",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        64,
+        224
+      ],
+      "id": "284682ff-db2f-4016-b68a-9d6e7645d793",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ans3BRXut9blyPJE",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Crea un usuario, donde extraigas del prompt su nombre, correo y telefono.",
+        "method": "POST",
+        "url": "https://proventricular-letisha-unthoroughly.ngrok-free.dev/crm/contact",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nombre",
+              "value": "={{ $fromAI('nombre', 'el nombre del usuario', 'string') }}"
+            },
+            {
+              "name": "correo",
+              "value": "={{ $fromAI('correo', 'el correo del usuario', 'string') }}"
+            },
+            {
+              "name": "telefono",
+              "value": "={{ $fromAI('telefono', 'el telefono del usuario', 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        240,
+        208
+      ],
+      "id": "54d01277-1221-4315-ad08-4017c5787507",
+      "name": "Crear Usuario"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Le dejaremos una nota al usuario por medio de su correo electronico, en el prompt deberas extraer el correo electronico y el contenido de la nota.",
+        "method": "PATCH",
+        "url": "https://proventricular-letisha-unthoroughly.ngrok-free.dev/crm/contact/note",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "correo",
+              "value": "={{ $fromAI('correo', 'el correo del usuario', 'string') }}"
+            },
+            {
+              "name": "nota",
+              "value": "={{ $fromAI('nota', 'la nota que se le dejara al usuario', 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        416,
+        208
+      ],
+      "id": "8ece89e0-c5b6-4890-acd9-d407351eb4db",
+      "name": "Dejar Nota"
+    },
+    {
+      "parameters": {
+        "toolDescription": "El usuario querra actualizar alguno de sus campos en hubspot, asi que tu mision sera, capturar el correo del usuario y por medio de este como identificador unico, ya que no hay ids, capturas los campos que quiere cambiar y su respectivo valor nuevo.",
+        "method": "PATCH",
+        "url": "https://proventricular-letisha-unthoroughly.ngrok-free.dev/crm/contact/update",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $fromAI('Body', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        608,
+        208
+      ],
+      "id": "a3418de6-1596-410b-a0a1-2fb5a82a4896",
+      "name": "Actualizar contacto"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Usuario": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dejar Nota": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar contacto": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ad9691e1-6c28-4e64-ba5f-45c0ed55cecc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6cac34b9f2aaa7fdceeab8d043ee0cf6732f9d42effd9451bd950f18b1f00a76"
+  },
+  "id": "DRFZ0gY5PMgBFaeY",
+  "tags": []
+}
